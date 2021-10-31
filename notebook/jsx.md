@@ -60,7 +60,7 @@ const coursesList = (
 ReactDOM.render(coursesList, document.getElementById('root'))
 ```
 
-**<React.Fragment>** giúp wrap nhiều element bên trong mà không tạo ra <div> container dư thừa trong DOM nhưng vẫn đúng cấu trúc.  
+**<React.Fragment>** giúp wrap nhiều element bên trong mà không tạo ra \<div\> container dư thừa trong DOM nhưng vẫn đúng cấu trúc.  
 
 ```jsx
 // JS
@@ -144,7 +144,7 @@ ReactDOM.render(app, document.getElementById('root'))
         ```jsx
         <h2 className="post-title">{title}</h2>
         ```  
-    - Quy ước các props: class => className, for (<label>) => htmlFor.  
+    - Quy ước các props: class => className, for (\<label\>) => htmlFor.  
     - Prop name phải tuân theo các quy ước có sẵn: id, alt, title, ...  
 
 - React component:  
