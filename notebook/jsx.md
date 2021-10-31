@@ -1,0 +1,499 @@
+## 6. JSX  
+
+JSX là Javascript XML; hỗ trợ viết XML, HTML trong file JS.  
+
+ReactDOM.render() chỉ có thể render react element vào DOM, không thể render JSX. Vì vậy cần sử dụng **babel** JS library để phân tích & chuyển đổi cú pháp JSX thành JS.  
+
+Thêm CDN babel vào website:  
+```html
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script type="text/babel">
+    // JSX code
+</script>
+```  
+
+Mặc định **script** tag có **type="text/javascript"** sẽ thực thi JS, nên sẽ gây lỗi khi thực thi JSX, cần đổi **type="text/babel"** để có thể thực thi JSX.  
+
+Nguyên tắc hoạt động của Babel: Khi Babel CDN được nhúng vào thì khi DOM load xong, sẽ tìm trong DOM các script tag type="text/babel", phân tích content & chuyển đổi cú pháp babel hỗ trợ, rồi đẩy code đã chuyển đổi cho browser.  
+
+**Note**: Khi muốn viết bất cứ JS code xen lẫn vào JSX, sử dụng **{}** gói lại JS code.  
+
+```jsx
+const reactCourse = 'ReactJS'
+
+// JS
+const ulReact = React.createElement(
+    'ul',
+    {className: "courses-list"},
+    React.createElement('li', { style: {color: "#f00"} }, 'Javascript'),
+    React.createElement('li', { style: "color: #0f0;" }, reactCourse)
+)
+
+// JSX
+const ul = <ul className="courses-list">
+    <li style={ {color: "#f00"} }>Javascript</li>
+    <li style="color: #0f0;">{reactCourse}</li>
+</ul>
+
+// ========= Ví dụ: Render array =========
+const courses = [
+    { name: "HTML & CSS" },
+    { name: "Responsive web design" },
+    { name: "ReactJS" }
+]
+
+// JS
+const _coursesList = React.createElement(
+    'ul', 
+    null, 
+    courses.map(course => React.createElement('li', null, course.name))
+)
+
+// JSX
+const coursesList = (
+    <ul>
+        {courses.map((course, index) => <li key={index}>{course.name}</li>)}
+    </ul>
+)
+
+// React-DOM
+ReactDOM.render(coursesList, document.getElementById('root'))
+```
+
+**<React.Fragment>** giúp wrap nhiều element bên trong mà không tạo ra <div> container dư thừa trong DOM nhưng vẫn đúng cấu trúc.  
+
+```jsx
+// JS
+const js = React.createElement(
+    React.Flagment,
+    null,
+    React.createElement('h1', null, 'Heading 1'),
+    React.createElement('h2', null, 'Heading 2')
+)
+
+// JSX
+const jsx = (
+    <React.Fragment>
+        <h1>Heading 1</h1>
+        <h2>Heading 2</h2>
+    </React.Fragment>
+)
+```  
+
+
+## 7. React element types  
+
+React hỗ trợ các element types: string (HTML tag name), function / class.  
+
+React hỗ trợ element type function / class nhằm chia components, bóc tách ứng dụng lớn thành nhiều thành phần nhỏ, rồi sau đó ráp lại thành ứng dụng hoàn chỉnh. -> Code sẽ clean hơn, ngắn gọn hơn, logic nghiệp vụ cũng được chia rõ ràng hơn & tái sử dụng được code.  
+
+Sử dụng function / Class làm component, các component này sẽ được gọi là function component hay class component.  
+
+**Hooks** ra đời hỗ trợ function component với nhiều tính năng vượt trội, nhưng class component vẫn có những ưu điểm như tính kế thừa của class ES6.  
+
+Chuỗi đại diện HTML tag name cũng có thể làm component.  
+
+```jsx
+// function component
+function Header() {
+    return <div className="header">Header</div>
+}
+
+// class component
+class Content extends React.Component {
+    render() {
+        return <div className="content">Content</div>
+    }
+}
+
+// string component
+const Component = "div"
+
+// JS
+const _app = React.createElement(
+    "div",
+    { className: "wrapper" },
+    React.createElement(Header, null),  // element type: function
+    React.createElement(Content, null), // element type: class
+    React.createElement(
+        Component,                      // element type: string
+        { className: "footer" },
+        "Footer"
+    )
+);
+
+// JSX
+const app = (
+    <div className="wrapper">
+        <Header />
+        <Content />
+        <Component className="footer">Footer</Component>
+    </div>
+)
+
+ReactDOM.render(app, document.getElementById('root'))
+```  
+
+
+## 8. props  
+
+**props** là object chứa những attributes & children mô tả React element tạo ra.  
+
+- React elements:  
+    - Sử dụng props giống như attribute của HTML tag:  
+        ```jsx
+        <h2 className="post-title">{title}</h2>
+        ```  
+    - Quy ước các props: class => className, for (<label>) => htmlFor.  
+    - Prop name phải tuân theo các quy ước có sẵn: id, alt, title, ...  
+
+- React component:  
+    - Sử dụng props giống như argument cho Component.  
+        ```jsx
+        <Item title="Title"/>
+        function Item (props) {
+            return <div>{props.title}</div>
+        }
+        ```  
+    - Prop name có thể đặt tự do.  
+    - Sử dụng destructuring để có thể đặt default value.  
+        ```jsx
+        function Item ({title = ""}) {
+            return <div>{title}</div>
+        }
+        ```
+
+**Note**:  
+
+- Prop *key* là prop đặc biệt, chỉ sử dụng khi đưa vào array.  
+- Prop có thể là bất cứ kiểu dữ liệu nào.  
+
+Các cách truyền **attribute** props:  
+
+- Dạng chuỗi:  
+    ```jsx
+    <Component propName="string literals" /> 
+    ```  
+- Dạng expression:  
+    ```jsx
+    <Component propName={expression} />
+    ```
+
+```jsx
+// API
+const items = [
+    {
+        id: "1",
+        title: "C#(.NET) - Tương tác với file Excel",
+        image: "https://cdn.fullstack.edu.vn/f8-learning/blog_posts/311/6147eea9cef9c.png",
+        description: "Bạn có kiến thức ngôn ngữ C#! Bạn muốn thực hiện tương tác với file excel.",
+        publishedAt: "Một ngày trước - 5 phút đọc"
+    },
+    {
+        id: "2",
+        title: "Xin chào những thành viên của F8 ạ",
+        image: "https://cdn.fullstack.edu.vn/f8-learning/blog_posts/1103/617cd56a23685.png",
+        description: "Gánh nặng tuổi 18.",
+        publishedAt: "11 giờ trước - 1 phút đọc"
+    }
+]
+
+// PostItem.js
+function PostItem ({ item = {} }) {
+    return (
+        <div className="post-item">
+            <img src={item.image} alt={item.title} style={{ maxWidth: "400px" }} />
+            <h2 className="post-title">{item.title}</h2>
+            <p className="post-desc">{item.description}</p>
+            <p className="post-published">{item.publishedAt}</p>
+        </div>
+    )
+}
+
+// App.js
+const App = () => (
+    <div id="wrapper">
+        {items.map(item => (
+            <PostItem
+                key={item.id}
+                item={item}
+            />
+        ))}
+    </div>
+)
+
+// index.js
+ReactDOM.render(<App />, document.getElementById('root'))
+```  
+
+Mặc định khi truyền prop mà không gán giá trị thì prop sẽ mang giá trị Boolean **true**.  
+
+```jsx
+function Span({ display }) {
+    return <span>{display && "Hello!"}</span>
+}
+
+function App() {
+    // prop display mặc định mang giá trị Boolean true
+    return (
+        <div id="wrapper">
+            <Span display />
+        </div>
+    )
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```  
+
+**Note**: Spread / Rest props  
+
+```jsx
+function Input({ label, ...inputProps }) {
+    return (
+        <div>
+            <label htmlFor={inputProps.id}>{label}</label>
+            <input {...inputProps} />
+        </div>
+    )
+}
+
+function App() {
+    return (
+        <div id="wrapper">
+            <Input
+                label="Fullname"
+                type="checkbox"
+                id="fullname"
+                name="fullname"
+                placeholder="Enter name ..."
+            />
+        </div>
+    )
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```  
+
+Các cách truyền **children** prop:  
+
+- Dạng chuỗi:  
+    ```jsx
+    <Component>string literals</Component> 
+    ```  
+- Dạng expression:  
+    ```jsx
+    <Component>{expression}</Component>
+    ```
+
+```jsx
+function Span({ children }) {
+    return <span>{children}</span>
+}
+
+function App() {
+    return (
+        <div id="wrapper">
+            <Span>Hello!</Span>
+        </div>
+    )
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```  
+
+**Bài toán**: Render prop - children prop là function  
+```jsx
+function List({ data, children }) {
+    return (
+        <ul>
+            {data.map(children)}
+            {data.map((...args) => children(...args))}
+        </ul>
+    )
+}
+
+function App() {
+    const cars = ['BMW', 'Honda', 'Mazda']
+    return (
+        <div id="wrapper">
+            <List data={cars}>
+                {(item, index) => <li key={index}>{item}</li>}
+            </List>
+        </div>
+    )
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```
+
+
+## 9. DOM events  
+
+Tên các event của React tuân thủ theo camel case như: onClick, onDoubleClick, ...  
+
+```jsx
+const App = () => (
+    <div id="wrapper">
+        <button 
+            onClick={e => console.dir(e.target)}
+        >
+            Click me!
+        </button>
+    </div>
+)
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```  
+
+**Note**: Các component đều là UI component, KHÔNG viết code xử lý ở component. Khi xử lý event ta sẽ nhận các function truyền qua props.  
+
+```jsx
+// PostItem.js
+function PostItem({ item = {}, onClick = () => {} }) {
+    return (
+        <div className="post-item">
+            <img src={item.image} alt={item.title} style={{ maxWidth: "400px" }} />
+            <h2
+                className="post-title"
+                onClick={() => onClick(item)}
+            >
+                {item.title}
+            </h2>
+            <p className="post-desc">{item.description}</p>
+            <p className="post-published">{item.publishedAt}</p>
+        </div>
+    )
+}
+
+// App.js
+const App = () => {
+
+    // useCallback -> tối ưu performance
+    const handleClick = (item) => {
+        console.log(item)
+    }
+
+    return (
+        <div id="wrapper">
+            {items.map(item => (
+                <PostItem
+                    key={item.id}
+                    item={item}
+                    onClick={handleClick}
+                />
+            ))}
+        </div>
+    )
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```  
+
+
+## 10. Quy ước đặt tên component  
+
+Khi đặt tên component luôn viết hoa chữ cái đầu, nếu do nhiều từ tạo thành thì viết hoa tất cả các chữ cái đầu của các từ.  
+
+**Note**:  
+
+- Component có thể là một chuỗi đại diện HTML tag name.  
+- Boolean, undefined & null sẽ không được render, nhằm kết hợp toán tử logic để render theo điều kiện.  
+
+**Bài toán**: Hiển thị input của form  
+```jsx
+const Form = {
+    Input() {
+        return <input />
+    },
+    Checkbox() {
+        return <input type="checkbox" />
+    }
+}
+
+const App = () => (
+    <div id="wrapper">
+        <Form.Checkbox />
+    </div>
+)
+
+const App = () => {
+    const type = 'Input'
+    const Component = Form[type]
+    return (
+        <div id="wrapper">
+            <Component />
+        </div>
+    )
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```  
+
+Component có thể là một chuỗi đại diện HTML tag name.  
+
+**Bài toán**: Xử lý event của button & link -> Sử dụng trong **thống kê**  
+```jsx
+function Button({ title, href, onClick }) {
+    let Component = 'button'
+    const props = {}
+
+    if (href) {
+        Component = 'a'
+        props.href = href
+    }
+
+    if (onClick) {
+        props.onClick = onClick
+    }
+
+    // Component có thể là một chuỗi đại diện HTML tag name
+    return (
+        <Component {...props}>{title}</Component>
+    )
+}
+
+const App = () => {
+    const handleClick = () => {
+        console.log(Math.floor(Math.random() * 100));
+    }
+    return (
+        <div id="wrapper">
+            <Button
+                title="Click me!"
+                href="https://fullstack.edu.vn"
+                onClick={handleClick}
+            />
+        </div>
+    )
+
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```   
+
+Boolean, undefined & null sẽ không được render, nhằm kết hợp toán tử logic để render theo điều kiện.  
+
+**Bài toán**: In lời chào, Render theo điều kiện  
+```jsx
+function App() {
+    let firstAccess = true
+
+    // Render theo điều kiện
+    return (
+        <div id="wrapper">
+            {firstAccess && <h1>Welcome to F8</h1>}
+        </div>
+    )
+}
+
+function App({title}) {
+    // Render theo điều kiện
+    return (
+        <div id="wrapper">
+            <h1>{title || 'Welcome to F8'}</h1>
+        </div>
+    )
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```  
