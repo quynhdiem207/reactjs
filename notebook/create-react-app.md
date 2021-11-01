@@ -35,10 +35,10 @@ Facebook đã xây dựng sẵn **create-react-app** library hỗ trợ nhanh ch
 3. Cài webpack (**webpack** + **webpack-cli**) for dev.  
 4. Cài **react** + **react-dom**.  
 5. Cài babel (**@babel/core** + **@babel/preset-env** + **@babel/preset-react** + **babel-loader**) for dev.  
-    > @babel/core: Chuyển đổi ES6 về ES5.
-    > @babel/preset-env: Cấu hình environment phù hợp nhiều browser khác nhau (chuyển ES6+ -> ES5).
-    > @babel/preset-react: Chuyển đổi JSX về JS.
-    > babel-loader: Cho phép chuyển đổi JS files sử dụng babel + webpack.  
+    >- @babel/core: Chuyển đổi ES6 về ES5.
+    >- @babel/preset-env: Cấu hình environment phù hợp nhiều browser khác nhau (chuyển ES6+ -> ES5).
+    >- @babel/preset-react: Chuyển đổi JSX về JS.
+    >- babel-loader: Cho phép chuyển đổi JS files sử dụng babel + webpack.  
 6. Tạo index.html  
 7. Tạo index.js  
 8. Cấu hình webpack:  
@@ -76,7 +76,7 @@ Facebook đã xây dựng sẵn **create-react-app** library hỗ trợ nhanh ch
         ```  
     - Chạy project với yarn start (--hot [hot reload] sẽ update phần thay đổi trong code thay vì reload cả trang & --open sẽ tự bật trên browser)  
 
-**Note**: Project tạo thủ công này chưa tích hợp thông báo lỗi syntax, ...  
+**Note**: Project tạo thủ công này chưa tích hợp thông báo lỗi syntax, trong khi project tạo bởi create-react-app library đã tích hơp sẵn **eslint** library cảnh báo lỗi syntax & các tiện ích khác.  
 
 
 ## 4. Tạo project sử dụng ceate-react-app  
@@ -91,7 +91,7 @@ Các scripts:
     Sử dụng webpack-dev-server tự động opent project lên browser.  
 - yarn build: build sourse code into static files for production.  
 - yarn test: Run test.  
-- yarn eject: Bung ra cấu hình webpack bị ẩn (nên tránh, thay vào đó sẽ sử dụng các libraries hỗ trợ thay đổi cấu hình webpack).  
+- yarn eject: Bung ra cấu hình webpack bị ẩn đi (nên tránh, thay vào đó sẽ sử dụng các libraries hỗ trợ thay đổi cấu hình webpack).  
 
 
 ## 5. NPM, NPX & YARN  
@@ -103,11 +103,15 @@ Các scripts:
     - Project scope: sử dụng khi project phụ thuộc vào các libraries này.  
         - khi cài hay xóa thư viện sẽ không ảnh hưởng tới project khác.  
         - Khi cài library thì sẽ download từ npmjs & lưu vào node_modules của project & được list vào mục dependencies / devDependencies.  
+            npm i libraryName \[-dev\] 
         - Khi xóa thư viện sẽ xóa khỏi node_modules & list dependencies / devDependencies.  
+            npm uninstall libraryName  
 
     - Global scope: sử dụng khi project không bị phụ thuộc vào các libraries (trong code không hề import thư viện này), phổ biến là libraries cho phép thực thi các command line hay scripts, eg: nodemon, create-react-app, cross-env, ...  
         - Khi cài library sẽ download từ npmjs & lưu vào User directory, vì vậy có thể thực thi ở bất cứ đâu.  
+            npm i -g libraryName *hoặc* npm i --global libraryName  
         - Khi xóa thư viện sẽ xóa khỏi User directory.  
+            npm uninstall -g libraryName  
 
     - Các thư viện cho phép thực thi command thực ra cung cấp một file **bin** giúp thực thi script trong Shell script.  
 
@@ -115,7 +119,12 @@ Các scripts:
     - Ưu điểm: luôn dùng được version mới nhất.  
 
 - YARN là một package manager quản lý các JS libraries.  
-    - Là sản phẩm của Facebook, ra đời nhằm cải thiện các vấn đề NPM gặp phải như performance, security nhunwng hiện tại NPM đã cải thiện được các vấn đề này nên sự khác biệt giữa YARN & NPM là không lớn.  
+    - Là sản phẩm của Facebook, ra đời nhằm cải thiện các vấn đề NPM gặp phải như performance, security nhưng hiện tại NPM đã cải thiện được các vấn đề này nên sự khác biệt giữa YARN & NPM là không lớn.  
+
+    yarn add libraryName \[-D / --dev\]  
+    yarn remove libraryName  
+    yarn global add libraryName  
+    yarn global remove libraryName  
 
 **Note**:  
 
@@ -148,4 +157,7 @@ Sự khác biệt giữa NPM & YARN không lớn:
 - .gitignore: Khai báo file & directory bị bỏ qua khi commit lên git server.  
 - README.md: File document mô tả về project sẽ được hiển thị khi đẩy lên Git server.  
 
-**Note**: install **serve** library & chạy script **serve -s build** để start một web server khác chạy source code production đã tối ưu được build ra.  
+
+## 7. serve  
+
+Install **serve** library & chạy script **serve -s build** để start một web server khác chạy source code production đã tối ưu được build ra để deploy.  
