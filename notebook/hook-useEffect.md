@@ -405,7 +405,7 @@ function Content() {
 export default Content
 ```
 
-## 7. Real-time function with useEffect() 
+## 7. Real-time subcribe / unsubcribe with useEffect() 
 
 *Ví dụ*: Chat app, comment, ...  
 

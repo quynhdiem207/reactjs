@@ -44,9 +44,8 @@ useState() ra đời giúp đơn giản hóa việc thể hiện trạng thái c
 4. Nguyên lý hoạt động của useState():  
     - Trong lần đầu tiên render, nó lấy initState gán cho state. Từ lần 2 trở đi nó lấy giá trị trước đó của state gán cho state.  
     - Sau khi setState, React sẽ lên lịch trình & đưa vào hàng đợi chờ  re-render Component bằng cách gọi lại function component đó để nhận được React element mới, xử lý & update UI.  
-        **Note**: Khi gọi setState() React sẽ sử dụng toán tử === so sánh argument truyền vào & state, nếu false mới re-render.  
-
-        **Note**: Do được React lên lịch chờ re-render nên dù gọi setState() nhiều lần vẫn sẽ chỉ re-render một lần.  
+        - Khi gọi setState() React sẽ sử dụng toán tử === so sánh argument truyền vào & state, nếu false mới re-render.  
+        - Do được React lên lịch chờ re-render nên dù gọi setState() nhiều lần vẫn sẽ chỉ re-render một lần.  
 
 ```jsx
 import { useState } from 'react'
