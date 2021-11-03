@@ -4,75 +4,73 @@ useState đề cập tới trạng thái của dữ liệu, tức là sự thay 
 
 useState() ra đời giúp đơn giản hóa việc thể hiện trạng thái của dữ liệu ra UI, Nói đơn giản là dữ liệu thay đổi gì thì giao diện thay đổi đó.  
 
-Sử dụng useState() khi đang có dữ liệu được hiển thị trên UI, rồi muốn khi dữ liệu được thay đổi thì UI tự động được cập nhật lại (render lại theo dữ liệu).  
+1. **Sử dụng**: Khi đang có dữ liệu được hiển thị trên UI, rồi muốn khi dữ liệu được thay đổi thì UI tự động được cập nhật lại (render lại theo dữ liệu).  
+2. **Đầu vào**: useState() có một parameter initState là initial value cho state với default value là undefined:  
+    - Khi không truyền argument thì initState là undefined.  
+        ```jsx
+        useState()
+        ```  
+    - Khi truyền argument là một value thì nó sẽ lấy value này làm initState.  
+        ```jsx
+        useState(value)
+        ```  
+    - Khi truyền argument là callback thì nó sẽ lấy return value của callback làm initState.  
+        ```jsx
+        useState(() => {
+            return [20, 30, 50].reduce((total, cur) => total + cur)
+        })
+        ```
+3. **Đầu ra**: useState() return array gồm 2 phần tử: state & setState.     
+    ```jsx
+    import { useState } from 'react'
+
+    function Component() {
+        const [state, setState] = useState(initState)
+    }
+    ```  
+    - setState() là function có một parameter với default value là undefined, được sử dụng để set lại state, thay thế state bằng giá trị mới. Khi muốn sửa giá trị của state thì gọi function này & truyền argument cho nó.  
+        - Khi không truyền argument thì nó sẽ gán undefined cho state.  
+            ```jsx
+            setState()
+            ```  
+        - Khi argument là một value thì nó sẽ gán value cho state.  
+            ```jsx
+            setState(value)
+            ```  
+        - Khi argument là callback, nó sẽ truyền giá trị trước đó của state làm đối số cho callback & gán return value của callback cho state.  
+            ```jsx
+            setState(prevState => { return ... })
+            ```  
+4. Nguyên lý hoạt động của useState():  
+    - Trong lần đầu tiên render, nó lấy initState gán cho state. Từ lần 2 trở đi nó lấy giá trị trước đó của state gán cho state.  
+    - Sau khi setState, React sẽ lên lịch trình & đưa vào hàng đợi chờ  re-render Component bằng cách gọi lại function component đó để nhận được React element mới, xử lý & update UI.  
+        **Note**: Khi gọi setState() React sẽ sử dụng toán tử === so sánh argument truyền vào & state, nếu false mới re-render.  
+
+        **Note**: Do được React lên lịch chờ re-render nên dù gọi setState() nhiều lần vẫn sẽ chỉ re-render một lần.  
 
 ```jsx
 import { useState } from 'react'
 
-function Component() {
-    const [state, setState] = useState(initState)
-}
-```
+function App() {
+    const [info, setInfo] = useState({
+    name: "Diêm Quỳnh"
+    })
 
-**Note**:  
-
-1. useState() có một parameter initState là initial value cho state với default value là undefined:  
-    - Khi không truyền argument thì initState là undefined.  
-      ```jsx
-      const [state, setState] = useState()
-      ```  
-    - Khi truyền argument là một value thì nó sẽ lấy value này làm initState.  
-      ```jsx
-      const [state, setState] = useState(value)
-      ```  
-    - Khi truyền argument là callback thì nó sẽ lấy return value của callback làm initState.  
-      ```jsx
-      const [state, setState] = useState(() => {
-          return [20, 30, 50].reduce((total, cur) => total + cur)
-      })
-      ```
-2. useState() return array gồm 2 phần tử: state & setState.  
-3. setState() là function có một parameter với default value là undefined, được sử dụng để set lại state, khi muốn sửa giá trị của state thì gọi function này & truyền argument cho nó.  
-    - Khi không truyền argument thì nó sẽ gán undefined cho state.  
-      ```jsx
-      setState()
-      ```  
-    - Khi argument là một value thì nó sẽ gán value cho state.  
-      ```jsx
-      setState(value)
-      ```  
-    - Khi argument là callback, nó sẽ truyền giá trị trước đó của state làm đối số cho callback & gán return value của callback cho state.  
-      ```jsx
-      setState(prevState => { return ... })
-      ```  
-4. Nguyên lý hoạt động của useState():  
-    - Trong lần đầu tiên render, nó lấy initState gán cho state. Từ lần 2 trở đi nó lấy giá trị trước đó của state gán cho state.  
-    - Sau khi setState, React sẽ lên lịch trình & đưa vào hàng đợi chờ  re-render Component bằng cách gọi lại function component đó để nhận được React element mới, xử lý & update UI.  
-      **Note**: Do được React lên lịch chờ re-render nên dù gọi setState() nhiều lần vẫn sẽ chỉ re-render một lần.  
-5. setState() thay thế state bằng giá trị mới.  
-    ```jsx
-    import { useState } from 'react'
-
-    function App() {
-      const [info, setInfo] = useState({
-        name: "Diêm Quỳnh"
-      })
-
-      const handleUpdate = () => {
-        setInfo({ ...info, age: 26 })
-      }
-
-    // {"name":"Diêm Quỳnh"} -> {"name":"Diêm Quỳnh","age":26}
-      return (
-        <div className="App" style={{ padding: 20 }}>
-          <h1>{JSON.stringify(info)}</h1>
-          <button onClick={handleUpdate}>Update</button>
-        </div>
-      );
+    const handleUpdate = () => {
+    setInfo({ ...info, age: 26 })
     }
 
-    export default App;
-    ```  
+// {"name":"Diêm Quỳnh"} -> {"name":"Diêm Quỳnh","age":26}
+    return (
+    <div className="App" style={{ padding: 20 }}>
+        <h1>{JSON.stringify(info)}</h1>
+        <button onClick={handleUpdate}>Update</button>
+    </div>
+    );
+}
+
+export default App;
+```  
 
 
 ## 2. Một số ví dụ  
@@ -184,7 +182,7 @@ function App() {
 export default App;
 ```  
 
-### ================ Input ================  
+### ==== Input ====  
 
 ```jsx
 import { useState } from 'react'
@@ -212,7 +210,7 @@ function App() {
 export default App;
 ```
 
-### ============ Radio button =============
+### ==== Radio button ====
 
 ```jsx
 import { useState } from 'react'
@@ -249,7 +247,7 @@ function App() {
 export default App;
 ```
 
-### ============== Checkbox ==============
+### ==== Checkbox ====
 
 ```jsx
 import { useState } from 'react'
@@ -336,34 +334,4 @@ function App() {
 }
 
 export default App;
-```
-
-## 4. Mounted / Unmounted
-
-- Mounted (gắn vào) là thời điểm đưa component vào sử dụng.  
-- Unmounted (gỡ ra) là thời điểm gỡ component ra không sử dụng nữa.  
-
-```jsx
-// Content.js
-function Content() {
-    return <h1>Welcom to F8</h1>
-}
-
-export default Content
-
-// App.js
-import { useState } from 'react'
-import Content from './Content'
-
-function App() {
-    const [show, setShow] = useState(false)
-
-    return (
-        <div className="App" style={{ padding: 20 }}>
-            <button onClick={() => setShow(!show)}>Toggle</button>
-            {show && <Content />}
-        </div>
-    )
-}
-export default App
 ```

@@ -10,6 +10,8 @@ Hook bao gồm: Built-in hook do react cung cấp & Custom hook.
 
 Quy ước đặt tên hook: **useName()**.  
 
+Cần nhớ **sử dụng khi nào**, **đầu vào** & **đầu ra** của các hooks khác nhau.  
+
 **Note**:  
 
 1. Hook chỉ dùng cho function component.  

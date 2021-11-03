@@ -61,7 +61,7 @@ Sau khi thêm library sẽ có một biến global là obj **React** gồm các 
 **Note**: https://jsfiddle.net hoặc https://codepen.io hoặc https://codesandbox.io viết code online.  
 
 ```js
-// ======== Ví dụ: <h1 title="Hello" class="heading">Hello Guys</h1> ========
+// === Ví dụ: <h1 title="Hello" class="heading">Hello Guys</h1> ===
 // Tạo DOM element
 const h1 = document.createElement('h1')
 h1.title = 'Hello'

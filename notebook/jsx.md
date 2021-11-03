@@ -60,38 +60,18 @@ const coursesList = (
 ReactDOM.render(coursesList, document.getElementById('root'))
 ```
 
-**<React.Fragment>** giúp wrap nhiều element bên trong mà không tạo ra \<div\> container dư thừa trong DOM nhưng vẫn đúng cấu trúc.  
-
-```jsx
-// JS
-const js = React.createElement(
-    React.Flagment,
-    null,
-    React.createElement('h1', null, 'Heading 1'),
-    React.createElement('h2', null, 'Heading 2')
-)
-
-// JSX
-const jsx = (
-    <React.Fragment>
-        <h1>Heading 1</h1>
-        <h2>Heading 2</h2>
-    </React.Fragment>
-)
-```  
-
 
 ## 7. React element types  
 
-React hỗ trợ các element types: string (HTML tag name), function / class.  
+React hỗ trợ các element types: string (HTML tag name), function/class, ... 
 
 React hỗ trợ element type function / class nhằm chia components, bóc tách ứng dụng lớn thành nhiều thành phần nhỏ, rồi sau đó ráp lại thành ứng dụng hoàn chỉnh. -> Code sẽ clean hơn, ngắn gọn hơn, logic nghiệp vụ cũng được chia rõ ràng hơn & tái sử dụng được code.  
 
-Sử dụng function / Class làm component, các component này sẽ được gọi là function component hay class component.  
+Component gồm: function component & class component.  
 
-**Hooks** ra đời hỗ trợ function component với nhiều tính năng vượt trội, nhưng class component vẫn có những ưu điểm như tính kế thừa của class ES6.  
+**Hooks** ra đời hỗ trợ function component với nhiều tính năng vượt trội, nhưng class component vẫn có những ưu điểm như tính chất OOP (eg: kế thừa) của class ES6.  
 
-Chuỗi đại diện HTML tag name cũng có thể làm component.  
+React hỗ trợ các built-in component: Các components return element có element type là string (HTML tag name), React.StricMode, React.Fragment, ...
 
 ```jsx
 // function component
@@ -106,7 +86,7 @@ class Content extends React.Component {
     }
 }
 
-// string component
+// built-in component return element with string element type (HTML tag name)
 const Component = "div"
 
 // JS
@@ -132,6 +112,29 @@ const app = (
 )
 
 ReactDOM.render(app, document.getElementById('root'))
+```  
+
+**Note**: Ngoài ra, React còn hỗ trợ một số element types:  
+
+- **React.Fragment**: Component giúp wrap nhiều element bên trong mà không tạo ra container dư thừa trong DOM nhưng vẫn đúng cấu trúc.  
+- **React.StricMode**: Component chỉ hoạt động ở môi trường development giúp verify code đưa ra cảnh báo cho những tình huống code xấu (về performence hay cách triển khai) nên sẽ luôn render 2 lần.  
+
+```jsx
+// JS
+const js = React.createElement(
+    React.Flagment,
+    null,
+    React.createElement('h1', null, 'Heading 1'),
+    React.createElement('h2', null, 'Heading 2')
+)
+
+// JSX
+const jsx = (
+    <React.Fragment>
+        <h1>Heading 1</h1>
+        <h2>Heading 2</h2>
+    </React.Fragment>
+)
 ```  
 
 
@@ -394,11 +397,6 @@ ReactDOM.render(<App />, document.getElementById('root'))
 
 Khi đặt tên component luôn viết hoa chữ cái đầu, nếu do nhiều từ tạo thành thì viết hoa tất cả các chữ cái đầu của các từ.  
 
-**Note**:  
-
-- Component có thể là một chuỗi đại diện HTML tag name.  
-- Boolean, undefined & null sẽ không được render, nhằm kết hợp toán tử logic để render theo điều kiện.  
-
 **Bài toán**: Hiển thị input của form  
 ```jsx
 const Form = {
@@ -429,8 +427,6 @@ const App = () => {
 ReactDOM.render(<App />, document.getElementById('root'))
 ```  
 
-Component có thể là một chuỗi đại diện HTML tag name.  
-
 **Bài toán**: Xử lý event của button & link -> Sử dụng trong **thống kê**  
 ```jsx
 function Button({ title, href, onClick }) {
@@ -446,7 +442,6 @@ function Button({ title, href, onClick }) {
         props.onClick = onClick
     }
 
-    // Component có thể là một chuỗi đại diện HTML tag name
     return (
         <Component {...props}>{title}</Component>
     )
@@ -456,6 +451,7 @@ const App = () => {
     const handleClick = () => {
         console.log(Math.floor(Math.random() * 100));
     }
+
     return (
         <div id="wrapper">
             <Button
@@ -465,13 +461,12 @@ const App = () => {
             />
         </div>
     )
-
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))
 ```   
 
-Boolean, undefined & null sẽ không được render, nhằm kết hợp toán tử logic để render theo điều kiện.  
+**Note**: Boolean, undefined & null sẽ không được render, nhằm kết hợp toán tử logic để render theo điều kiện.  
 
 **Bài toán**: In lời chào, Render theo điều kiện  
 ```jsx
