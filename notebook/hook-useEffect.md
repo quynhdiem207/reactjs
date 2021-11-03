@@ -344,7 +344,7 @@ function Content() {
 
     useEffect(() => {
         const timerId = setTimeout(() => {
-            countdown > 0 && setCountdown(countdown - 1)
+            setCountdown(countdown - 1)
         }, 1000)
 
         // cleanup function
