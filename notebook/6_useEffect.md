@@ -58,6 +58,8 @@ export default App
     **Note**: 
 
     - callback luôn được gọi sau khi component mounted.  
+    - Gọi callback sau khi render UI (return element đã được add vào DOM).  
+        -> Tránh làm chậm quá trình render.  
     - Cleanup function:  
         - Là function được return bởi callback của useEffect().  
         - Luôn được gọi trước khi component unmounted.  
@@ -67,8 +69,6 @@ export default App
     - **useEffect(callback)**  
         - Gọi callback mỗi khi component được re-render.  
             -> *Vấn đề*: setState() trong callback có thể sẽ tạo nên vòng lặp thực thi callback vô hạn -> làm giảm hiệu năng của web.  
-        - Gọi callback sau khi component thêm return element vào DOM.  
-            -> Tránh làm chậm quá trình render.  
         -> **Sử dụng**: Khi muốn thực hiện logic nào đó lặp lại mỗi khi component bị re-render.  
     - **useEffect(callback, [])**  
         - Chỉ gọi callback 1 lần sau khi component mounted.  

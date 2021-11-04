@@ -63,15 +63,16 @@ ReactDOM.render(coursesList, document.getElementById('root'))
 
 ## 7. React element types  
 
-React hỗ trợ các element types: string (HTML tag name), function/class, ... 
+React hỗ trợ các element types: string (HTML tag name), function/class.  
+
+Một số element types khác như: React.Fragment, React.StricMode  
 
 React hỗ trợ element type function / class nhằm chia components, bóc tách ứng dụng lớn thành nhiều thành phần nhỏ, rồi sau đó ráp lại thành ứng dụng hoàn chỉnh. -> Code sẽ clean hơn, ngắn gọn hơn, logic nghiệp vụ cũng được chia rõ ràng hơn & tái sử dụng được code.  
 
+#### ==== Component ====
+
 Component gồm: function component & class component.  
-
-**Hooks** ra đời hỗ trợ function component với nhiều tính năng vượt trội, nhưng class component vẫn có những ưu điểm như tính chất OOP (eg: kế thừa) của class ES6.  
-
-React hỗ trợ các built-in component: Các components return element có element type là string (HTML tag name), React.StricMode, React.Fragment, ...
+Component cũng có thể là string đại diện HTML tag name.  
 
 ```jsx
 // function component
@@ -86,7 +87,7 @@ class Content extends React.Component {
     }
 }
 
-// built-in component return element with string element type (HTML tag name)
+// string component
 const Component = "div"
 
 // JS
@@ -114,7 +115,7 @@ const app = (
 ReactDOM.render(app, document.getElementById('root'))
 ```  
 
-**Note**: Ngoài ra, React còn hỗ trợ một số element types:  
+**Note**: Một số built-in component mà React hỗ trợ:  
 
 - **React.Fragment**: Component giúp wrap nhiều element bên trong mà không tạo ra container dư thừa trong DOM nhưng vẫn đúng cấu trúc.  
 - **React.StricMode**: Component chỉ hoạt động ở môi trường development giúp verify code đưa ra cảnh báo cho những tình huống code xấu (về performence hay cách triển khai) nên sẽ luôn render 2 lần.  
@@ -168,19 +169,65 @@ const jsx = (
 
 **Note**:  
 
-- Prop *key* là prop đặc biệt, chỉ sử dụng khi đưa vào array.  
+- Prop attribute *key* là prop đặc biệt, chỉ sử dụng khi đưa vào array.  
 - Prop có thể là bất cứ kiểu dữ liệu nào.  
 
-Các cách truyền **attribute** props:  
+**Note**: Truyền props:  
 
-- Dạng chuỗi:  
-    ```jsx
-    <Component propName="string literals" /> 
-    ```  
-- Dạng expression:  
-    ```jsx
-    <Component propName={expression} />
-    ```
+- **attribute** props:  
+    - Dạng chuỗi:  
+        ```jsx
+        <Component propName="string literals" /> 
+        ```  
+    - Dạng expression:  
+        ```jsx
+        <Component propName={expression} />
+        ```
+    - Không gán giá trị: Mặc định prop sẽ mang giá trị Boolean **true**.  
+        ```jsx
+         <Component propName />
+        ```
+- **children** prop:  
+    - Dạng chuỗi:  
+        ```jsx
+        <Component>string literals</Component> 
+        ```  
+    - Dạng expression:  
+        ```jsx
+        <Component>{expression}</Component>
+        ```  
+        - Expression có giá trị Boolean, undefined & null sẽ không được render, nhằm kết hợp toán tử logic để render theo điều kiện.  
+
+#### ==== Truyền attribute props ====
+
+```jsx
+function Input({ label, ...inputProps }) {
+    return (
+        <div>
+            <label htmlFor={inputProps.id}>{label}</label>
+            <input {...inputProps} />
+        </div>
+    )
+}
+
+function App() {
+    return (
+        <div id="wrapper">
+            <Input
+                label="Fullname"
+                type="checkbox"
+                id="fullname"
+                name="fullname"
+                placeholder="Enter name ..."
+            />
+        </div>
+    )
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```  
+
+**Bài toán**: Hiển thị danh sách bài posts**.  
 
 ```jsx
 // API
@@ -229,7 +276,7 @@ const App = () => (
 ReactDOM.render(<App />, document.getElementById('root'))
 ```  
 
-Mặc định khi truyền prop mà không gán giá trị thì prop sẽ mang giá trị Boolean **true**.  
+#### ==== Truyền attribute prop mà không gán giá trị ====
 
 ```jsx
 function Span({ display }) {
@@ -248,45 +295,7 @@ function App() {
 ReactDOM.render(<App />, document.getElementById('root'))
 ```  
 
-**Note**: Spread / Rest props  
-
-```jsx
-function Input({ label, ...inputProps }) {
-    return (
-        <div>
-            <label htmlFor={inputProps.id}>{label}</label>
-            <input {...inputProps} />
-        </div>
-    )
-}
-
-function App() {
-    return (
-        <div id="wrapper">
-            <Input
-                label="Fullname"
-                type="checkbox"
-                id="fullname"
-                name="fullname"
-                placeholder="Enter name ..."
-            />
-        </div>
-    )
-}
-
-ReactDOM.render(<App />, document.getElementById('root'))
-```  
-
-Các cách truyền **children** prop:  
-
-- Dạng chuỗi:  
-    ```jsx
-    <Component>string literals</Component> 
-    ```  
-- Dạng expression:  
-    ```jsx
-    <Component>{expression}</Component>
-    ```
+#### ==== Truyền children props ====
 
 ```jsx
 function Span({ children }) {
@@ -305,6 +314,7 @@ ReactDOM.render(<App />, document.getElementById('root'))
 ```  
 
 **Bài toán**: Render prop - children prop là function  
+
 ```jsx
 function List({ data, children }) {
     return (
@@ -327,7 +337,33 @@ function App() {
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))
-```
+```  
+
+**Bài toán**: In lời chào, Render theo điều kiện  
+
+```jsx
+function App() {
+    let firstAccess = true
+
+    // Render theo điều kiện
+    return (
+        <div id="wrapper">
+            {firstAccess && <h1>Welcome to F8</h1>}
+        </div>
+    )
+}
+
+function App({title}) {
+    // Render theo điều kiện
+    return (
+        <div id="wrapper">
+            <h1>{title || 'Welcome to F8'}</h1>
+        </div>
+    )
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```  
 
 
 ## 9. DOM events  
@@ -427,7 +463,10 @@ const App = () => {
 ReactDOM.render(<App />, document.getElementById('root'))
 ```  
 
+**Note**: Component có thể là string HTML tag name.  
+
 **Bài toán**: Xử lý event của button & link -> Sử dụng trong **thống kê**  
+
 ```jsx
 function Button({ title, href, onClick }) {
     let Component = 'button'
@@ -465,30 +504,3 @@ const App = () => {
 
 ReactDOM.render(<App />, document.getElementById('root'))
 ```   
-
-**Note**: Boolean, undefined & null sẽ không được render, nhằm kết hợp toán tử logic để render theo điều kiện.  
-
-**Bài toán**: In lời chào, Render theo điều kiện  
-```jsx
-function App() {
-    let firstAccess = true
-
-    // Render theo điều kiện
-    return (
-        <div id="wrapper">
-            {firstAccess && <h1>Welcome to F8</h1>}
-        </div>
-    )
-}
-
-function App({title}) {
-    // Render theo điều kiện
-    return (
-        <div id="wrapper">
-            <h1>{title || 'Welcome to F8'}</h1>
-        </div>
-    )
-}
-
-ReactDOM.render(<App />, document.getElementById('root'))
-```  
