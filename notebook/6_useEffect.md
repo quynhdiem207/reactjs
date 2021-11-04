@@ -51,12 +51,12 @@ export default App
     Tại sao phải sử dụng useEffect()?  
         -> Đưa logic xử lý vào callback của useEffect, tránh những logic đồng bộ phức tạp làm chậm quá trình render tăng thời gian tải trang -> ưu tiên xử lý tạo UI cho người dùng.  
         
-2. **Đầu vào**: useEffect() nhận 2 đối số: callback & dependences.  
+2. **Đầu vào**: useEffect() nhận 2 đối số: callback & dependencies.  
     ```jsx
-    useEffect(callback, [dependences])
+    useEffect(callback, [dependencies])
     ```  
     - *callback* arg là bắt buộc, được sử dụng để thực hiện các side effect.  
-    - *dependences* là optional, là array chứa những sự phụ thuộc về mặt dữ liệu.  
+    - *dependencies* là optional, là array chứa những sự phụ thuộc về mặt dữ liệu.  
 
     **Note**: 
 
@@ -77,9 +77,9 @@ export default App
         - Chỉ gọi callback 1 lần sau khi component mounted.  
             -> Giải quyết vấn đề setState() tạo vòng lặp thực thi callback vô hạn.  
         -> **Sử dụng**: khi muốn thực hiện logic nào đó 1 lần sau khi component được mounted & không muốn lặp lại mỗi khi component bị re-render.  
-    - **useEffect(callback, dependences)**  
-        - Gọi callback mỗi khi các phần tử trong dependences thay đổi giá trị.  
-            Khi component bị re-render, useEffect sẽ kiểm tra dependences trước & sau re-render có khác nhau không, nếu khác nhau sẽ gọi callback.  
+    - **useEffect(callback, dependencies)**  
+        - Gọi callback mỗi khi các phần tử trong dependencies thay đổi giá trị.  
+            Khi component bị re-render, useEffect sẽ kiểm tra dependencies trước & sau re-render có khác nhau không, nếu khác nhau sẽ gọi callback.  
         -> **Sử dụng**: khi muốn thực hiện logic nào đó lặp lại mỗi khi component bị re-render & parameter phụ thuộc thay đổi giá trị.  
 
 **Note**: Khi thực hiện 1 logic mới thì viết một useEffect() mới.  
@@ -150,7 +150,7 @@ function Content() {
 export default Content
 ```
 
-**Bài toán**: Chọn tab thực hiện call API khác nhau để lấy & hiển thị data -> **useEffect(callback, dependences)**  
+**Bài toán**: Chọn tab thực hiện call API khác nhau để lấy & hiển thị data -> **useEffect(callback, dependencies)**  
 
 ```jsx
 // Content.js
@@ -336,7 +336,7 @@ function Content() {
 export default Content
 ```
 
-*Cách 2*: timer **setTimeout()** + **useEffect(callback, dependences)**  
+*Cách 2*: timer **setTimeout()** + **useEffect(callback, dependencies)**  
 
 ```jsx
 // Content.js

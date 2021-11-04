@@ -7,20 +7,22 @@
     ```jsx
     import { useCallback } from 'react'
     ```
-2. **Đầu vào**: useCallback() nhận 2 đối số: callback & dependences.  
+2. **Đầu vào**: useCallback() nhận 2 đối số: callback & dependencies.  
     - *callback* là function mà chúng ta muốn tạo.  
-    - *dependences* là một array chứa sự phụ thuộc về mặt dữ liệu, tức là các biến tham chiếu được sử dụng trong callback có khả năng bị thay đổi sau mỗi lần re-render.  
+    - *dependencies* là một array chứa sự phụ thuộc về mặt dữ liệu, tức là các biến tham chiếu được sử dụng trong callback có khả năng bị thay đổi sau mỗi lần re-render.  
     ```jsx
     useCallback(callback, [])
-    useCallback(callback, dependences)
+    useCallback(callback, dependencies)
     ```
 3. **Đầu ra**: useCallback() return một tham chiếu đến function được tạo.  
     ```jsx
-    const handleFunc = useCallback(callback, dependences)
+    const handleFunc = useCallback(callback, dependencies)
     ```
 4. Nguyên lý hoạt động: 
     - Lần đầu tiên Parent Component được mounted, useCallback() nhận callback, khởi tạo function, nhận về tham chiếu & lưu ra ngoài scope của Parent component, return lại tham chiếu đó.  
-    - Khi Parent component bị re-render, nếu dependences không thay đổi thì useCallback() sẽ return tham chiếu trước đó thay vì tạo function mới & return tham chiếu mới.  
+    - Khi Parent component bị re-render:  
+        - **useCallback(callback, [])**: return tham chiếu nhận được khi component mounted.  
+        - **useCallback(callback, dependencies)**: nếu các phần tử trong dependencies không thay đổi thì sẽ return tham chiếu trước đó thay vì tạo function mới & return tham chiếu mới.  
 
 **Ví dụ**:  
 
