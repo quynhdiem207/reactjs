@@ -12,6 +12,17 @@ Quy ước đặt tên hook: **useName()**.
 
 Cần nhớ **sử dụng khi nào**, **đầu vào** & **đầu ra** của các hooks khác nhau.  
 
+**Sử dụng built-in function / class của React library**:  
+```jsx
+// Cách 1
+import React from 'react'
+React.useName()
+
+// Cách 2
+import { useName } from 'react'
+useName
+```
+
 **Note**:  
 
 1. Hook chỉ dùng cho function component.  

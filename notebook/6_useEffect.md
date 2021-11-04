@@ -32,9 +32,12 @@ export default App
 ```
 
 
-## 2. useEffect() hook
+## 2. React.useEffect() hook
 
 1. **Sử dụng**:  Khi muốn thực hiện các Side effect.  
+    ```jsx
+    import { useEffect } from 'react'
+    ```  
     *Side effect* đề cập đến tác động xảy ra với một chương trình phần mềm dẫn tới dữ liệu của chương trình bị thay đổi.  
 
     > useEffect giúp:  

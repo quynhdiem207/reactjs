@@ -1,10 +1,13 @@
-## 1. useState() hook  
+## 1. React.useState() hook  
 
 useState đề cập tới trạng thái của dữ liệu, tức là sự thay đổi của dữ liệu.  
 
 useState() ra đời giúp đơn giản hóa việc thể hiện trạng thái của dữ liệu ra UI, Nói đơn giản là dữ liệu thay đổi gì thì giao diện thay đổi đó.  
 
-1. **Sử dụng**: Khi đang có dữ liệu được hiển thị trên UI, rồi muốn khi dữ liệu được thay đổi thì UI tự động được cập nhật lại (render lại theo dữ liệu).  
+1. **Sử dụng**: Khi đang có dữ liệu được hiển thị trên UI, rồi muốn khi dữ liệu thay đổi thì UI tự động được cập nhật lại (render lại theo dữ liệu).  
+    ```jsx
+    import { useState } from 'react'
+    ```
 2. **Đầu vào**: useState() có một parameter initState là initial value cho state với default value là undefined:  
     - Khi không truyền argument thì initState là undefined.  
         ```jsx
@@ -22,8 +25,6 @@ useState() ra đời giúp đơn giản hóa việc thể hiện trạng thái c
         ```
 3. **Đầu ra**: useState() return array gồm 2 phần tử: state & setState.     
     ```jsx
-    import { useState } from 'react'
-
     function Component() {
         const [state, setState] = useState(initState)
     }

@@ -1,9 +1,12 @@
-## 1. useLayoutEffect() hook
+## 1. React.useLayoutEffect() hook
 
 1. **Sử dụng**: Khi muốn thực hiện các Side effect.  
-2. **Đầu vào**: useEffect() nhận 2 đối số: callback & dependences.  
     ```jsx
-    useEffect(callback, [dependences])
+    import { useLayoutEffect } from 'react'
+    ```
+2. **Đầu vào**: useLayoutEffect() nhận 2 đối số: callback & dependences.  
+    ```jsx
+    useLayoutEffect(callback, [dependences])
     ```  
     - *callback* arg là bắt buộc, được sử dụng để thực hiện các side effect.  
     - *dependences* là optional, là array chứa những sự phụ thuộc về mặt dữ liệu.  

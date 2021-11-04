@@ -1,20 +1,8 @@
-## 1. useRef() hook
+## 1. React.useRef() hook  
 
 1. **Sử dụng**: tạo biến lưu các giá trị bất kỳ qua một tham chiếu bên ngoài phạm vi của function component để mỗi lần component re-render sẽ không set lại biến.  
     ```jsx
-    const count
-    function App() {
-        const count = value
-        console.log(count)
-    }
-
-    // ====== useRef() ======
-    import { useState, useRef } from 'react'
-    function App() {
-        const count = useRef()
-        count.current = value
-        console.log(count.current)
-    }
+    import { useRef } from 'react'
     ```
 2. **Đầu vào**: useRef() có một parameter initValue là initial value cho biến với default value là undefined, chỉ sử dụng trong lần đầu tiên component mounted.  
     - Khi không truyền argument, initValue là undefined.  
@@ -48,8 +36,10 @@
     ```  
 - Khi muốn select react element trong DOM sử dụng **useRef()** & truyền attribute prop **ref** cho react element đó.  
     ```jsx
-    const element = useRef()
-    return <tag ref={element}>Text</tag>
+    function App() {
+        const element = useRef()
+        return <tag ref={element}>Text</tag>
+    }
     ```
 
 
