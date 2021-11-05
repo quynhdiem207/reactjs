@@ -13,16 +13,29 @@
 
 <body>
     <div id="root"></div>
+
     <script type="text/babel">
-        const jsx = (
-            <React.StricMode>
-                <React.Fragment>
-                    <h1>Heading 1</h1>
-                    <h2>Heading 2</h2>
-                </React.Fragment>
-            </React.StricMode>
-        )
-        ReactDOM.render(jsx, document.getElementById('root'))
+        function List({ data, children }) {
+            return (
+                <ul>
+                    {data.map((...props) => children(...props))}
+                    {data.map(children)}
+                </ul>
+            )
+        }
+
+        function App() {
+            const cars = ['BMW', 'Honda', 'Mazda']
+            return (
+                <div id="wrapper">
+                    <List data={cars}>
+                        {(item, index) => <li key={index}>{item}</li>}
+                    </List>
+                </div>
+            )
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'))
     </script>
 </body>
 

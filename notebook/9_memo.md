@@ -1,4 +1,4 @@
-## 1. React.memo()  
+## 1. React.memo() HOC  
 
 memo() là một Higher Order Component (HOC) - component bậc cao wrap lại component.  
 
