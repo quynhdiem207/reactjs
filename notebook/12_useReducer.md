@@ -2,7 +2,15 @@
 
 1. **Sử dụng**: Cung cấp thêm 1 sự lựa chọn để sử dụng state cho function component.  
     - *useState()*: Trong hầu hết trường hợp có thể sử dụng để tạo trạng thái cho component, phù hợp với các component có state đơn giản (primitive data type or complex data type with simple object & array) hoặc số lượng state trong component ít.  
+        - Quy trình:  
+            >1, InitState  
+            >2, Actions  
     - *useReducer()*: phù hợp với các component có state phức tạp (object & array lồng nhiều tầng, nhiều cấp) hoặc có rất nhiều state hay các state phụ thuộc nhau.  
+        - Quy trình:  
+            >1, InitState  
+            >2, Actions  
+            >3, Reducer  
+            >4, Dispatch
 2. **Đầu vào**: useReducer() nhận 3 đối số: reducer, initState & init.  
     ```jsx
     useReducer(reducer, initState, init)
@@ -48,6 +56,7 @@
 >- constants.js (action_names)  
 >- actions.js (action functions)  
 >- reducer.js (initial + reducer)  
+>- index.js (dispatch)
 
 
 ## 2. Ví dụ
@@ -55,8 +64,8 @@
 **Bài toán**: Tăng & giảm số.  
 
 - **useState()**:  
-    1. Init state: 0  
-    2. Actions: Up (state + 1) / Down (state - 1)  
+    >1, Init state: 0  
+    >2, Actions: Up (state + 1) / Down (state - 1)  
 
     ```jsx
     import { useState, useRef } from 'react'
@@ -76,10 +85,10 @@
     export default App;
     ```
 - **useReducer()**:  
-    1. Init state: 0  
-    2. Actions: Up (state + 1) / Down (state - 1)  
-    3. Reducer  
-    4. Dispatch  
+    >1, Init state: 0  
+    >2, Actions: Up (state + 1) / Down (state - 1)  
+    >3, Reducer  
+    >4, Dispatch  
 
     ```jsx
     import { useReducer } from 'react'
