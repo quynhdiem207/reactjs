@@ -5,20 +5,22 @@
         - Quy trình:  
             >1, InitState  
             >2, Actions  
+    
     - *useReducer()*: phù hợp với các component có state phức tạp (object & array lồng nhiều tầng, nhiều cấp) hoặc có rất nhiều state hay các state phụ thuộc nhau.  
         - Quy trình:  
             >1, InitState  
             >2, Actions  
             >3, Reducer  
             >4, Dispatch
+
 2. **Đầu vào**: useReducer() nhận 3 đối số: reducer, initState & init.  
     ```jsx
     useReducer(reducer, initState, init)
     ```
     - *reducer*: function sử dụng để set lại state,  
         - reducer() nhận 2 đối số: state & action.  
-            - state: giá trị state hiện tại.  
-            - action: hành động được kích hoạt.  
+            >- state: giá trị state hiện tại.  
+            >- action: chứa thông tin action được kích hoạt (arg truyền vào dispatch).  
         - return giá trị state mới.  
         ```jsx
         (state, action) => { 
@@ -32,11 +34,12 @@
     - *initState*: giá trị khởi tạo cho state.  
     - *init*: function giúp set initState.  
         - init() nhận 1 đối số: initValue.  
-            - initValue là giá trị được sử dụng để return initState.  
+            >initValue là giá trị được sử dụng để return initState.  
         - return value sẽ là initState.  
         ```jsx
         (initValue) => { return ... }
         ```
+
 3. **Đầu ra**: useReducer() return array gồm 2 phần tử: state & dispatch.  
     ```jsx
     const [state, dispatch] = useReducer(reducer, initState, init)
@@ -47,6 +50,7 @@
         ```jsx
         dispatch(action)
         ```
+
 4. Nguyên lý hoạt động của useReducer():  
     - Lần đầu tiên khi component mounted, nó nhận các đối số, đem initState gán cho state, nhưng sẽ không gọi reducer.  
     - Khi dispatch được gọi, một action sẽ được kích hoạt, useReducer sẽ gọi reducer truyền vào state hiện tại & action được kích hoạt để update state.  
@@ -131,13 +135,13 @@
 **Bài toán**: Todo app with useReducer(), Khi điền tên công việc & bấm "Add", tên công việc sẽ được hiển thị, khi bấm x công việc sẽ bị xóa.  
 
 Cấu trúc thư mục:  
->- Todo
+>- todo-reducer
 >   - logger.js
 >   - constants.js
 >   - actions.js
 >   - reducer.js
 >   - index.js
->- App.js
+>- index.js
 
 **Note**: logger.js wrap lại reducer.js giúp logger state nhưng vẫn return result như cũ.  
 
@@ -148,7 +152,9 @@ function logger(reducer) {
         console.group(action.type)
         console.log('Action: ', action)
         console.log('Prev state: ', prevState)
+
         const newState = reducer(prevState, action)
+        
         console.log('Next state: ', newState)
         console.groupEnd()
 
@@ -250,12 +256,15 @@ function App() {
 
 export default App
 
-// App.js
-import TodoApp from './Todo'
+// index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './todo-reducer';
 
-function App() {
-    return <TodoApp />
-}
-
-export default App;
+ReactDOM.render(
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>,
+    document.getElementById('root')
+);
 ```

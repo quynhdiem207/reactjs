@@ -11,7 +11,9 @@ React đã cung cấp sẵn một methed **React.createContext()** để tạo C
     ```jsx
     import { createContext } from 'react'
     ```  
-    Để có thể truyền dữ liệu Context sử dụng Provider để cung cấp dữ liệu từ Parent Component, & Consumer để Child component có thể nhận dữ liệu.  
+
+    **Note**: Để có thể truyền dữ liệu Context sử dụng Provider để cung cấp dữ liệu từ Parent Component, & Consumer để Child component có thể nhận dữ liệu.  
+
 2. **Đầu ra**: createContext() trả về một object có Provider & Consumer là các React components.  
     ```jsx
     const ContextName = createContext()
@@ -36,7 +38,7 @@ React đã cung cấp sẵn một methed **React.createContext()** để tạo C
 3. **Đầu ra**: useContext() trả về dữ liệu truyền từ Parent component.  
     ```jsx
     function ChildComponent() {
-        const theme = useContext(ContextName)
+        const data = useContext(ContextName)
         return ...
     }
     ```
@@ -139,6 +141,8 @@ React đã cung cấp sẵn một methed **React.createContext()** để tạo C
     export default App
 
     // index.js
+    import React from 'react';
+    import ReactDOM from 'react-dom';
     import App from './components/App';
     import { ThemeProvider } from './contexts/ThemeContext'
 

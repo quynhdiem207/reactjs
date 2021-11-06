@@ -1,7 +1,8 @@
-import TodoApp from './Todo-reducer'
 
 function App() {
-    return <TodoApp />
+    return (
+        <div></div>
+    )
 }
 
-export default App;
+export default App
