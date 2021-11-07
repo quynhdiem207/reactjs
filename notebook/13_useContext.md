@@ -1,4 +1,4 @@
-## 1. React.createContext() hook
+## 1. React.createContext()
 
 *Đặt vấn đề*: Trong thực tế các component có thể lồng nhau nhiều cấp, việc truyền dữ liệu qua props từ Parent component sang các Grandchild component sẽ gặp khó khăn.  
 

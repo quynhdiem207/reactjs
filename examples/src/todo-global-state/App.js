@@ -7,17 +7,16 @@ function App() {
     const { todos, todoInput } = state
 
     let [repairIndex, setRepairIndex] = useState()
+    const prevIndex = useRef()
 
     const inputRef = useRef()
     const todoList = useRef()
-    const prevIndex = useRef()
 
     useEffect(() => {
         todoList.current = document.getElementById('todo')
     }, [])
 
     useEffect(() => {
-        console.log(repairIndex, prevIndex.current);
         if (repairIndex !== undefined) {
             const todo = todoList.current.querySelector(`#todo-${repairIndex}`)
             todo.style.color = '#f00'
@@ -39,6 +38,9 @@ function App() {
     }
 
     const handleAdd = () => {
+        if (todoInput.trim() === '') {
+            return alert('Please enter a job to add...')
+        }
         dispatch(actions.addTodo(todoInput))
         repairIndex !== undefined && removeIndex()
         removeInput()
@@ -59,7 +61,12 @@ function App() {
     }
 
     const handleRepair = () => {
-        dispatch(actions.saveTodo(repairIndex))
+        if (repairIndex === undefined) {
+            return alert('Please choose a job to repair...')
+        }
+        if (state.todos[repairIndex] !== todoInput) {
+            dispatch(actions.saveTodo(repairIndex))
+        }
         removeIndex()
         removeInput()
     }

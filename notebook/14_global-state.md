@@ -73,7 +73,7 @@ function reducer(state, action) {
                 todoInput: action.payload
             }
         case ADD_TODO:
-            const todos = [...state.todos, state.todoInput]
+            const todos = [...state.todos, state.todoInput.trim()]
             localStorage.setItem('jobs', JSON.stringify(todos))
             return {
                 ...state,
@@ -88,17 +88,13 @@ function reducer(state, action) {
                 todos: _todos
             }
         case SAVE_TODO:
-            if (state.todos[action.payload] === state.todoInput) {
-                return state
-            } else {
-                const saveTodos = [...state.todos]
-                saveTodos[action.payload] = state.todoInput
-                localStorage.setItem('jobs', JSON.stringify(saveTodos))
-                return {
-                    ...state,
-                    todos: saveTodos
-                }
-            }
+             const saveTodos = [...state.todos]
+             saveTodos[action.payload] = state.todoInput.trim()
+             localStorage.setItem('jobs', JSON.stringify(saveTodos))
+             return {
+                 ...state,
+                 todos: saveTodos
+             }
         default:
             throw new Error('Invalid action')
     }
@@ -195,17 +191,16 @@ function App() {
     const { todos, todoInput } = state
 
     let [repairIndex, setRepairIndex] = useState()
+    const prevIndex = useRef()
 
     const inputRef = useRef()
     const todoList = useRef()
-    const prevIndex = useRef()
 
     useEffect(() => {
         todoList.current = document.getElementById('todo')
     }, [])
 
     useEffect(() => {
-        console.log(repairIndex, prevIndex.current);
         if (repairIndex !== undefined) {
             const todo = todoList.current.querySelector(`#todo-${repairIndex}`)
             todo.style.color = '#f00'
@@ -227,6 +222,9 @@ function App() {
     }
 
     const handleAdd = () => {
+        if (todoInput.trim() === '') {
+            return alert('Please enter a job to add...')
+        }
         dispatch(actions.addTodo(todoInput))
         repairIndex !== undefined && removeIndex()
         removeInput()
@@ -247,7 +245,12 @@ function App() {
     }
 
     const handleRepair = () => {
-        dispatch(actions.saveTodo(repairIndex))
+        if (repairIndex === undefined) {
+            return alert('Please choose a job to repair...')
+        }
+        if (state.todos[repairIndex] !== todoInput) {
+            dispatch(actions.saveTodo(repairIndex))
+        }
         removeIndex()
         removeInput()
     }

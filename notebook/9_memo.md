@@ -12,7 +12,28 @@ memo() là một Higher Order Component (HOC) - component bậc cao wrap lại c
     ```jsx
     memo(Component)
     ```  
-3. Nguyên lý hoạt động: Nhận một component & dùng toán tử === để check các props của component này sau mỗi lần re-render để quyết định có re-render hay không, nếu ít nhất một props thay đổi sẽ re-render, nếu không có props nào thay đổi sẽ không re-render.  
+3. Nguyên lý hoạt động: memo() dùng toán tử === để check các props của component được truyền làm argument sau mỗi lần re-render để quyết định có re-render hay không, nếu ít nhất một props thay đổi sẽ re-render, nếu không có props nào thay đổi sẽ không re-render.  
+    ```jsx
+    // Parent component
+    import Child from './Child'
+    
+    function Parent() {
+        return (
+            ...
+            <Child />
+            ...
+        )
+    }
+
+    // Child component
+    import { memo } from 'react'
+
+    function Child() {
+        return ...
+    }
+
+    export default memo(Child)
+    ```
 
 **Note**: Tránh lạm dụng memo(), chỉ sử dụng khi Parent component quá phức tạp mới sử dụng để tránh mỗi lần re-render sẽ re-render tất cả các Chilren Component làm giảm performance.  
 

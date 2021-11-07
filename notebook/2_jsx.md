@@ -143,38 +143,9 @@ const jsx = (
 
 **props** là object chứa những attributes & children mô tả React element tạo ra.  
 
-- React elements:  
-    - Sử dụng props giống như attribute của HTML tag:  
-        ```jsx
-        <h2 className="post-title">{title}</h2>
-        ```  
-    - Quy ước các props: class => className, for (\<label\>) => htmlFor.  
-    - Prop name phải tuân theo các quy ước có sẵn: id, alt, title, ...  
+### 1,  === Truyền props === 
 
-- React component:  
-    - Sử dụng props giống như argument cho Component.  
-        ```jsx
-        <Item title="Title"/>
-        function Item (props) {
-            return <div>{props.title}</div>
-        }
-        ```  
-    - Prop name có thể đặt tự do.  
-    - Sử dụng destructuring để có thể đặt default value.  
-        ```jsx
-        function Item ({title = ""}) {
-            return <div>{title}</div>
-        }
-        ```
-
-**Note**:  
-
-- Prop attribute *key* là prop đặc biệt, chỉ sử dụng khi đưa vào array.  
-- Prop có thể là bất cứ kiểu dữ liệu nào.  
-
-**Note**: Truyền props:  
-
-- **attribute** props:  
+- **attribute props**: Giống như attribute của HTML tag.  
     - Dạng chuỗi:  
         ```jsx
         <Component propName="string literals" /> 
@@ -185,9 +156,23 @@ const jsx = (
         ```
     - Không gán giá trị: Mặc định prop sẽ mang giá trị Boolean **true**.  
         ```jsx
-         <Component propName />
+        <Component propName />
         ```
-- **children** prop:  
+
+    **Các quy ước đặt prop name**:  
+
+    - Built-in HTML tag elements:  
+        - Prop name phải tuân theo các quy ước có sẵn: id, alt, ...  
+        - Các props khác biệt: class => className, for (\<label\>) => htmlFor.  
+    - Custom component:  
+        - Prop name có thể đặt tự do.  
+    
+    **Note**:  
+
+    - **key** là prop đặc biệt, chỉ sử dụng khi đưa vào array.  
+    - Prop có thể là bất cứ kiểu dữ liệu nào.  
+
+- **children prop**: Giống như content của HTML tag.    
     - Dạng chuỗi:  
         ```jsx
         <Component>string literals</Component> 
@@ -197,6 +182,25 @@ const jsx = (
         <Component>{expression}</Component>
         ```  
         - Expression có giá trị Boolean, undefined & null sẽ không được render, nhằm kết hợp toán tử logic để render theo điều kiện.  
+
+### 2,  === Nhận props ===  
+
+- props là argument thứ 1 của Component.  
+    ```jsx
+    function Component(props) {
+        ... props.propName ...
+        ... props.children ...
+        return ...
+    }
+    ```  
+- Sử dụng destructuring để có thể đặt default value.  
+    ```jsx
+    function Component ({propName = defaultValue, children}) {
+        ... props.propName ...
+        ... props.children ...
+        return ...
+    }
+    ```
 
 #### ==== Truyền attribute props ====
 

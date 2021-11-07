@@ -13,7 +13,7 @@ function reducer(state, action) {
                 todoInput: action.payload
             }
         case ADD_TODO:
-            const todos = [...state.todos, state.todoInput]
+            const todos = [...state.todos, state.todoInput.trim()]
             localStorage.setItem('jobs', JSON.stringify(todos))
             return {
                 ...state,
@@ -28,16 +28,12 @@ function reducer(state, action) {
                 todos: _todos
             }
         case SAVE_TODO:
-            if (state.todos[action.payload] === state.todoInput) {
-                return state
-            } else {
-                const saveTodos = [...state.todos]
-                saveTodos[action.payload] = state.todoInput
-                localStorage.setItem('jobs', JSON.stringify(saveTodos))
-                return {
-                    ...state,
-                    todos: saveTodos
-                }
+            const saveTodos = [...state.todos]
+            saveTodos[action.payload] = state.todoInput.trim()
+            localStorage.setItem('jobs', JSON.stringify(saveTodos))
+            return {
+                ...state,
+                todos: saveTodos
             }
         default:
             throw new Error('Invalid action')
