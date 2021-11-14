@@ -39,8 +39,9 @@ export const setTodoInput = payload => ({
     payload
 })
 
-export const addTodo = () => ({
-    type: ADD_TODO
+export const addTodo = payload => ({
+    type: ADD_TODO,
+    payload
 })
 
 export const deleteTodo = payload => ({
@@ -73,7 +74,7 @@ function reducer(state, action) {
                 todoInput: action.payload
             }
         case ADD_TODO:
-            const todos = [...state.todos, state.todoInput.trim()]
+            const todos = [...state.todos, action.payload]
             localStorage.setItem('jobs', JSON.stringify(todos))
             return {
                 ...state,
@@ -88,13 +89,13 @@ function reducer(state, action) {
                 todos: _todos
             }
         case SAVE_TODO:
-             const saveTodos = [...state.todos]
-             saveTodos[action.payload] = state.todoInput.trim()
-             localStorage.setItem('jobs', JSON.stringify(saveTodos))
-             return {
-                 ...state,
-                 todos: saveTodos
-             }
+            const saveTodos = [...state.todos]
+            saveTodos[action.payload[0]] = action.payload[1]
+            localStorage.setItem('jobs', JSON.stringify(saveTodos))
+            return {
+                ...state,
+                todos: saveTodos
+            }
         default:
             throw new Error('Invalid action')
     }
@@ -222,10 +223,11 @@ function App() {
     }
 
     const handleAdd = () => {
-        if (todoInput.trim() === '') {
+        const trimInput = todoInput.trim()
+        if (trimInput === '') {
             return alert('Please enter a job to add...')
         }
-        dispatch(actions.addTodo(todoInput))
+        dispatch(actions.addTodo(trimInput))
         repairIndex !== undefined && removeIndex()
         removeInput()
     }
@@ -233,8 +235,12 @@ function App() {
     const handleDelete = (e, index) => {
         e.stopPropagation()
         dispatch(actions.deleteTodo(index))
-        repairIndex !== undefined && removeIndex()
-        removeInput()
+        if (repairIndex !== undefined) {
+            prevIndex.current = repairIndex === todos.length - 1 ?
+                undefined : repairIndex
+            setRepairIndex(undefined)
+            removeInput()
+        }
     }
 
     const handleClick = (todo, index) => {
@@ -248,8 +254,12 @@ function App() {
         if (repairIndex === undefined) {
             return alert('Please choose a job to repair...')
         }
-        if (state.todos[repairIndex] !== todoInput) {
-            dispatch(actions.saveTodo(repairIndex))
+        const trimInput = todoInput.trim()
+        if (trimInput === '') {
+            return alert('Please enter a job to repair...')
+        }
+        if (state.todos[repairIndex] !== trimInput) {
+            dispatch(actions.saveTodo([repairIndex, trimInput]))
         }
         removeIndex()
         removeInput()
@@ -273,7 +283,128 @@ function App() {
                         onClick={() => handleClick(todo, index)}
                     >
                         {todo}
-                        <span onClick={(e) => handleDelete(e, index)}>&times;</span>
+                        <span onClick={e => handleDelete(e, index)}>&times;</span>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    )
+}
+
+export default App
+```
+
+Hoặc có thể sử dụng **contentEditable** attribute:  
+
+```jsx
+import { useEffect, useRef, useState } from 'react'
+import { useStore } from './store'
+import { actions } from './store'
+
+function App() {
+    const [state, dispatch] = useStore()
+    const { todos, todoInput } = state
+
+    let [repairIndex, setRepairIndex] = useState()
+
+    const inputRef = useRef()
+    const todoList = useRef()
+
+    useEffect(() => {
+        todoList.current = document.getElementById('todo')
+    }, [])
+
+    const removeInput = () => {
+        dispatch(actions.setTodoInput(''))
+        inputRef.current.focus()
+    }
+
+    const handleAdd = () => {
+        const trimInput = todoInput.trim()
+        if (trimInput === '') {
+            return alert('Please enter a job to add...')
+        }
+        dispatch(actions.addTodo(trimInput))
+        repairIndex !== undefined && setRepairIndex(undefined)
+        removeInput()
+    }
+
+    const handleDelete = (e, index) => {
+        e.stopPropagation()
+        dispatch(actions.deleteTodo(index))
+        repairIndex !== undefined && setRepairIndex(undefined)
+    }
+
+    const placeCaretAtEnd = (el) => {
+        el.focus();
+        if (typeof window.getSelection != "undefined"
+            && typeof document.createRange != "undefined") {
+            var range = document.createRange();
+            range.selectNodeContents(el);
+            range.collapse(false);
+            var sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+        } else if (typeof document.body.createTextRange != "undefined") {
+            var textRange = document.body.createTextRange();
+            textRange.moveToElementText(el);
+            textRange.collapse(false);
+            textRange.select();
+        }
+    }
+
+    const handleClick = (e, index) => {
+        e.stopPropagation()
+        setRepairIndex(index)
+        if (e.target.tagName === 'SPAN') {
+            e.target.contentEditable = true
+            placeCaretAtEnd(e.target)
+        } else {
+            const first = e.target.firstElementChild
+            first.contentEditable = true
+            placeCaretAtEnd(first)
+        }
+    }
+
+    const handleRepair = () => {
+        if (repairIndex === undefined) {
+            return alert('Please choose a job to repair...')
+        }
+        const todo = todoList.current.querySelector(`#todo-${repairIndex}`)
+        const trimInput = todo.firstElementChild.innerText.trim()
+        if (trimInput === '') {
+            todo.firstElementChild.innerText = todos[repairIndex]
+            return alert('Please enter a job to repair...')
+        }
+        if (state.todos[repairIndex] !== trimInput) {
+            dispatch(actions.saveTodo([repairIndex, trimInput]))
+        }
+        setRepairIndex(undefined)
+        removeInput()
+    }
+
+    return (
+        <div style={{ padding: 20 }}>
+            <input
+                ref={inputRef}
+                value={todoInput}
+                placeholder="Enter todo..."
+                onChange={e => dispatch(actions.setTodoInput(e.target.value))}
+            />
+            <button onClick={handleAdd}>Add</button>
+            {repairIndex !== undefined && (<button onClick={handleRepair}>Repair</button>)}
+            <ul id="todo">
+                {todos.map((todo, index) => (
+                    <li
+                        key={index}
+                        id={`todo-${index}`}
+                        onClick={e => handleClick(e, index)}
+                        onBlur={e => e.target.contentEditable = false}
+                    >
+                        <span style={{ minWidth: 160, display: 'inline-block' }}>
+                            {todo}
+                        </span>
+                        <span onClick={e => handleDelete(e, index)}>&times;</span>
                     </li>
                 ))}
             </ul>

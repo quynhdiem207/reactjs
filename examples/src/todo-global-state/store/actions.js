@@ -5,8 +5,9 @@ export const setTodoInput = payload => ({
     payload
 })
 
-export const addTodo = () => ({
-    type: ADD_TODO
+export const addTodo = payload => ({
+    type: ADD_TODO,
+    payload
 })
 
 export const deleteTodo = payload => ({

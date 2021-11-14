@@ -47,16 +47,18 @@ Sau khi thêm library sẽ có một biến global là obj **React** gồm các 
 
 *React.createElement()*: Tạo mới một React element là thành phần nhỏ nhất khi làm việc với React.  
 
-> **React.createElement(type, props, ...childrens)** trong đó:  
-> - *type*: kiểu element.  
-> - *props*: các attributes của element.
-> - *childrens*: các content bên trong element; có thể là:
->   string (child text node), object (child element node), array (array of child node), ...
->
-> Method return React element đã tạo là một object có các property:  
-> - *type* (element type), 
-> - *props* (object chứa element *attributes* & có *children* property chứa element content [string, object or array]), 
-> - ...
+**React.createElement(type, props, ...childrens)** trong đó:  
+>- *type*: kiểu element.  
+>- *props*: các attributes của element.
+>- *childrens*: các content bên trong element (từ arg thứ 3 trở đi); arg có thể là:
+>   - string (child text node),  
+>   - object (child element node), 
+>   - array (array of child node), ...
+
+**Output**: Method return React element đã tạo là một object có các property:  
+>- *type* (element type),  
+>- *props* (object chứa *attributes* & *children* (content: string, object or array) của react element,  
+> - ...  
 
 **Note**: https://jsfiddle.net hoặc https://codepen.io hoặc https://codesandbox.io viết code online.  
 

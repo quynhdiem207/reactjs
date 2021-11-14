@@ -13,8 +13,16 @@ Facebook đã xây dựng sẵn **create-react-app** library hỗ trợ nhanh ch
 
 **webpack** library: Giúp module hóa ứng dụng front-end. nó module hóa gần như mọi file làm việc với front-end từ JS, image, CSS, SCSS files, ... vì vậy đều có thể import hay export các file này.  
 
-- Hỗ trợ compile & kết hợp lại các file đã chia nhỏ để tạo ra số lượng static file đầu ra tối thiểu (eg: chỉ còn một file CSS, 1 file JS, ...), nhằm mục đích khi triển khai số lượng file ít sẽ giảm đi số lượng kết nối, giảm thời gian tải trang, & tăng hiệu năng của ứng dụng.  
-- Giúp làm các file đầu ra trở thành mini file như: tên biến thành một kí tự, loại bỏ khoảng xuống dòng & comment không cần thiết, ... làm giảm dung lượng file, giúp giảm thời gian tải khi truy cập website nhờ cài các plugin hỗ trợ.  
+- Hỗ trợ compile & kết hợp lại các file đã chia nhỏ để tạo ra số lượng static file đầu ra tối thiểu.  
+    - eg: chỉ còn một file CSS, 1 file JS, ...  
+
+    -> *Mục đích*: Khi triển khai số lượng file ít sẽ giảm đi số lượng kết nối đến các file, giảm thời gian tải trang, & tăng hiệu năng của ứng dụng (Do mỗi lần tải 1 file sẽ phải gửi đi 1 request HTTP đến các file này mà bản chất của request HTTP cần phải mở & đóng kết nối -> tăng thời gian tải trang nếu request đến nhiều file).  
+
+- Giúp làm các file đầu ra trở thành mini file:  
+    - Tên biến thành một kí tự,  
+    - Loại bỏ khoảng xuống dòng & comment không cần thiết, ...  
+
+    -> *Mục đích*: Làm giảm dung lượng file, giúp giảm thời gian tải khi truy cập website nhờ cài các plugin hỗ trợ.  
 
 Ưu điểm:  
 
@@ -67,7 +75,7 @@ Facebook đã xây dựng sẵn **create-react-app** library hỗ trợ nhanh ch
     - Xóa bỏ thẻ script đã link bundle.js thủ công khỏi public/index.html  
     - Build lại code & chạy project tại build/index.html  
     **Note**: Chạy project ở build/index.html & viết code ở public/index.html  
-11. Cài **webpack-dev-server** for dev để thay thế VSCode Live server, nó đảm nhiệm cả complile code lắng nghe sự thay đổi của webpack & chạy web server.  
+11. Cài **webpack-dev-server** for dev để thay thế VSCode Live server, nó đảm nhiệm cả compile code lắng nghe sự thay đổi của webpack & chạy web server.  
     - Sửa cấu hình scripts command line trong package.json:  
         ```json
         "scripts": {

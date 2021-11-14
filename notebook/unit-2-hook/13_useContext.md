@@ -49,27 +49,25 @@ React đã cung cấp sẵn một methed **React.createContext()** để tạo C
 **Bài toán**: Tạo theme cho phép chuyển chế độ Dark / light.  
 
 1. Cấu trúc thư mục:  
-    >- public
-    >   - css  
-    >       - App.css
     >- contexts
     >   - ThemeContext.js
     >- components
     >   - Paragraph.js
     >   - Content.js
-    >   - App.js
+    >   - App.js  
+    >   - App.css
     >- index.js  
 
 2. Viết CSS cho theme dark:  
     ```css
-    /* --- public/css/App.css --- */
+    /* --- components/App.css --- */
     .dark {
         color: #fff;
         background-color: #333;
     }
     ```
 
-3. Tạo context & truyền data:  
+3. Tạo context & Provider truyền data:  
     ```jsx
     // contexts/ThemeContext.js
     import { useState, createContext } from 'react'
@@ -91,7 +89,10 @@ React đã cung cấp sẵn một methed **React.createContext()** để tạo C
     }
 
     export { ThemeContext, ThemeProvider }
+    ```
 
+4. Child components nhận data truyền từ parent component:  
+    ```jsx
     // components/Paragraph.js
     import { useContext } from 'react'
     import { ThemeContext } from '../Contexts/ThemeContext'
@@ -120,12 +121,15 @@ React đã cung cấp sẵn một methed **React.createContext()** để tạo C
     }
 
     export default Content
+    ```
 
+5. Parent component:  
+    ```jsx
     // components/App.js
     import { useContext } from 'react'
     import { ThemeContext } from '../contexts/ThemeContext'
     import Content from './Content'
-    import '../public/css/App.css'
+    import './App.css'
 
     function App() {
         const themeContext = useContext(ThemeContext)
@@ -139,7 +143,10 @@ React đã cung cấp sẵn một methed **React.createContext()** để tạo C
     }
 
     export default App
+    ```
 
+6. index.js (entry point):
+    ```jsx
     // index.js
     import React from 'react';
     import ReactDOM from 'react-dom';

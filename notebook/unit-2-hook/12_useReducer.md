@@ -32,7 +32,7 @@
         }
         ```  
     - *initState*: giá trị khởi tạo cho state.  
-    - *init*: function giúp set initState.  
+    - *init*: function giúp set initState (optional argument).  
         - init() nhận 1 đối số: initValue.  
             >initValue là giá trị được sử dụng để return initState.  
         - return value sẽ là initState.  

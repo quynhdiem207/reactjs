@@ -10,7 +10,8 @@
     forward(ChildComponent)
     ```  
 
-3. Nguyên lý hoạt động: forwardRef nhận prop **ref** do Parent component truyền, xử lý & khi nó gọi Child Component sẽ truyền ref đã nhận làm argument thứ 2. Khi Child được mounted vào DOM sẽ lấy element được tham chiếu lưu vào biến ref.  
+3. Nguyên lý hoạt động:  
+    forwardRef nhận prop **ref** do Parent component truyền, xử lý & khi nó gọi Child Component sẽ truyền ref đã nhận làm argument thứ 2. Khi Child được mounted vào DOM sẽ lấy element được tham chiếu lưu vào biến ref.  
 
     ```jsx
     // Parent component

@@ -18,7 +18,7 @@
     ```jsx
     const handleFunc = useCallback(callback, dependencies)
     ```
-4. Nguyên lý hoạt động: 
+4. Nguyên lý hoạt động:  
     - Lần đầu tiên Parent Component được mounted, useCallback() nhận callback, khởi tạo function, nhận về tham chiếu & lưu ra ngoài scope của Parent component, return lại tham chiếu đó.  
     - Khi Parent component bị re-render:  
         - **useCallback(callback, [])**: return tham chiếu nhận được khi component mounted.  

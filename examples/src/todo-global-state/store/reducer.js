@@ -13,7 +13,7 @@ function reducer(state, action) {
                 todoInput: action.payload
             }
         case ADD_TODO:
-            const todos = [...state.todos, state.todoInput.trim()]
+            const todos = [...state.todos, action.payload]
             localStorage.setItem('jobs', JSON.stringify(todos))
             return {
                 ...state,
@@ -29,7 +29,7 @@ function reducer(state, action) {
             }
         case SAVE_TODO:
             const saveTodos = [...state.todos]
-            saveTodos[action.payload] = state.todoInput.trim()
+            saveTodos[action.payload[0]] = action.payload[1]
             localStorage.setItem('jobs', JSON.stringify(saveTodos))
             return {
                 ...state,

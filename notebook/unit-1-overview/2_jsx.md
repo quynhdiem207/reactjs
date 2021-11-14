@@ -141,7 +141,7 @@ const jsx = (
 
 ## 8. props  
 
-**props** là object chứa những attributes & children mô tả React element tạo ra.  
+**props** là object chứa những attributes & children (content) mô tả React element tạo ra.  
 
 ### 1,  === Truyền props === 
 
@@ -169,7 +169,10 @@ const jsx = (
     
     **Note**:  
 
-    - **key** là prop đặc biệt, chỉ sử dụng khi đưa vào array.  
+    - **key** là prop đặc biệt, chỉ truyền cho các react element đặt trong array được render vào DOM.  
+    - **ref** là prop đặc biệt, được React thiết kế với mục đích:  
+        - Khi truyền ref cho element có thể tham chiếu đến element đó trong DOM.  
+        - khi truyền ref cho function component có thể forward (chuyển tiếp) đến component đó (không thể nhận ref qua props).  
     - Prop có thể là bất cứ kiểu dữ liệu nào.  
 
 - **children prop**: Giống như content của HTML tag.    
@@ -388,7 +391,7 @@ const App = () => (
 ReactDOM.render(<App />, document.getElementById('root'))
 ```  
 
-**Note**: Các component đều là UI component, KHÔNG viết code xử lý ở component. Khi xử lý event ta sẽ nhận các function truyền qua props.  
+**Note**: Khi child component là UI component, KHÔNG viết code xử lý ở child component, mà sẽ nhận các function xử lý event đước truyền qua props.  
 
 ```jsx
 // PostItem.js

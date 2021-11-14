@@ -38,10 +38,11 @@ function App() {
     }
 
     const handleAdd = () => {
-        if (todoInput.trim() === '') {
+        const trimInput = todoInput.trim()
+        if (trimInput === '') {
             return alert('Please enter a job to add...')
         }
-        dispatch(actions.addTodo(todoInput))
+        dispatch(actions.addTodo(trimInput))
         repairIndex !== undefined && removeIndex()
         removeInput()
     }
@@ -49,8 +50,12 @@ function App() {
     const handleDelete = (e, index) => {
         e.stopPropagation()
         dispatch(actions.deleteTodo(index))
-        repairIndex !== undefined && removeIndex()
-        removeInput()
+        if (repairIndex !== undefined) {
+            prevIndex.current = repairIndex === todos.length - 1 ?
+                undefined : repairIndex
+            setRepairIndex(undefined)
+            removeInput()
+        }
     }
 
     const handleClick = (todo, index) => {
@@ -64,8 +69,12 @@ function App() {
         if (repairIndex === undefined) {
             return alert('Please choose a job to repair...')
         }
-        if (state.todos[repairIndex] !== todoInput) {
-            dispatch(actions.saveTodo(repairIndex))
+        const trimInput = todoInput.trim()
+        if (trimInput === '') {
+            return alert('Please enter a job to repair...')
+        }
+        if (state.todos[repairIndex] !== trimInput) {
+            dispatch(actions.saveTodo([repairIndex, trimInput]))
         }
         removeIndex()
         removeInput()
@@ -89,7 +98,7 @@ function App() {
                         onClick={() => handleClick(todo, index)}
                     >
                         {todo}
-                        <span onClick={(e) => handleDelete(e, index)}>&times;</span>
+                        <span onClick={e => handleDelete(e, index)}>&times;</span>
                     </li>
                 ))}
             </ul>
