@@ -9,57 +9,60 @@
 
 ## 2. CSS module
 
-1. **Sử dụng**: Giúp các css file hoạt động độc lập, không bị ảnh hưởng đến nhau.  
+1, **Sử dụng**: Giúp các css file hoạt động độc lập, không bị ảnh hưởng đến nhau.  
 
-    -> Khi có nhiều components & css file đi kèm dù đặt trùng CSS selector (id & class) nhưng không bị ảnh hưởng đến nhau.  
+-> Khi có nhiều components & css file đi kèm dù đặt trùng CSS selector (id & class) nhưng không bị ảnh hưởng đến nhau.  
 
-2. Nguyên lý hoạt động:  
-    - Project tạo bởi create-react-app đã được tích hợp sẵn webpack & được cấu hình để hỗ trợ CSS module, nó sẽ nhận diện các file '*.module.css*' tiến hành xử lý & export ra một object.  
-        - Thực tế là đặt lại selector (id & class) = filename_selector__base64 để không bị trùng selector với components khác.  
-        - Các element selector (HTML tag name) & universal selector (*) không thể module hóa, nên vẫn sẽ ảnh hưởng đến component khác -> không sử dụng khi style độc lập cho component.  
-    - Object được export ra có property là css selector (id & class), chứa selector được đặt lại.  
+2, **Nguyên lý hoạt động**:  
+
+- Project tạo bởi create-react-app đã được tích hợp sẵn webpack & được cấu hình để hỗ trợ CSS module, nó sẽ nhận diện các file '*.module.css*' tiến hành xử lý & export ra một object.  
+    - Thực tế là đặt lại selector (id & class) = filename_selector__base64 để không bị trùng selector với components khác.  
+    - Các element selector (HTML tag name), universal selector (*) & attribute selector (\[attr=value\]) không thể module hóa, nên vẫn sẽ ảnh hưởng đến component khác -> không sử dụng khi style độc lập cho component.  
+- Object được export ra có property là css selector (id & class), chứa selector được đặt lại.  
+
+```jsx
+import name from './filename.module.css'
+
+function Component() {
+    return <div className={name.selector}>...</div>
+}
+
+export default Component
+```
+
+3, **Note**:  
+
+- CSS module không có tính kế thừa.  
+- Đặt tên css selector theo camel case, không thể chứa ký tự '-' vì khi code JS dấu '-' sẽ bị lỗi.  
+- Để style global theo cấu trúc đồng nhất cho toàn bộ ứng dụng, tạo component wrap toàn bộ ứng dụng & style cho component này:  
+    >- GlobalStyles  
+    >   - index.js
+    >   - GlobalStyles.css
+    >- App.js
+
     ```jsx
-    import name from './filename.module.css'
+    // GlobalStyles/index.js
+    import './GlobalStyles.css'
 
-    function Component() {
-        return <div className={name.selector}>...</div>
+    function GlobalStyles({ children }) {
+        return children
     }
 
-    export default Component
+    export default GlobalStyles
+
+    // App.js
+    import GlobalStyles from './components/GlobalStyles'
+
+    function App() {
+        return (
+            <GlobalStyles>
+                <div className="selector">...</div>
+            </GlobalStyles>
+        )
+    }
+
+    export default App
     ```
-
-3. **Note**:  
-    - CSS module không có tính kế thừa.  
-    - Đặt tên css selector theo camel case, không thể chứa ký tự '-' vì khi code JS dấu '-' sẽ bị lỗi.  
-    - Để style global theo cấu trúc đồng nhất cho toàn bộ ứng dụng, tạo component wrap toàn bộ ứng dụng & style cho component này:  
-        >- GlobalStyles  
-        >   - index.js
-        >   - GlobalStyles.css
-        >- App.js
-
-        ```jsx
-        // GlobalStyles/index.js
-        import './GlobalStyles.css'
-
-        function GlobalStyles({ children }) {
-            return children
-        }
-
-        export default GlobalStyles
-
-        // App.js
-        import GlobalStyles from './components/GlobalStyles'
-
-        function App() {
-            return (
-                <GlobalStyles>
-                    <div className="selector">...</div>
-                </GlobalStyles>
-            )
-        }
-
-        export default App
-        ```
 
 
 #### ==== Bài toán ====
@@ -178,10 +181,15 @@ import name from './filename.module.css'
 
 function Component() {
     return (
-        <div className={`${name.className1} ${name.className2}`}>
+        <div className={
+            `${name.className1} ${name.className2} ...`
+        }>
             ...
         </div>
-        <div className={[name.className1, name.className2].join(' ')}>
+        
+        <div className={
+            [name.className1, name.className2, ...].join(' ')
+        }>
             ...
         </div>
     )
@@ -200,144 +208,158 @@ clsx là một function component:
 clsx(...args)
 ```
 
-- **Đầu vào**: clsx() nhận các đối số:  
-    - là string nếu thêm class cố định.  
-        ```jsx
-        clsx(className1, className2, ...)
-        ```
-    - là object có các property là string className & mang giá trị boolean quyết định có thêm className hay không tùy vào logic.  
-        ```jsx
-        clsx({
-            className1: boolean, 
-            className2: boolean, 
-            ...
-        })
-        ```
+1, **Đầu vào**: clsx() nhận các đối số:  
 
-- **Sử dụng**:  
-    - Giúp sử dụng nhiều class:  
-        ```jsx
-        import clsx from 'clsx'
-        import name from './filename.module.css'
+- là string nếu thêm class cố định.  
+    ```jsx
+    clsx(className1, className2, ...)
+    ```
+- là object có các property là string className & mang giá trị boolean quyết định có thêm className hay không tùy vào logic.  
+    ```jsx
+    clsx({
+        className1: boolean, 
+        className2: boolean, 
+        ...
+    })
+    ```
 
-        function Component() {
-            return (
-                <div className={clsx(name.className1, name.className2, ...)}>
-                    ...
-                </div>
-            )
-        }
-        
-        export default Component
-        ```
+2, **Sử dụng**:  
 
-    - Giúp xử lý dynamic class tùy vào logic condition:  
-        ```jsx
-        import clsx from 'clsx'
-        import name from './filename.module.css'
+- Giúp sử dụng nhiều class:  
+    ```jsx
+    import clsx from 'clsx'
+    import name from './filename.module.css'
 
-        function Component() {
-            return (
-                <div className={clsx(name.className1, {
-                    [name.className2]: boolean,
-                    ...
-                }, ...)}>
-                    ...
-                </div>
-            )
-        }
-        
-        export default Component
-        ```
+    function Component() {
+        return (
+            <div className={clsx(
+                name.className1, 
+                name.className2, 
+                ...
+            )}>
+                ...
+            </div>
+        )
+    }
+    
+    export default Component
+    ```
+
+- Giúp xử lý dynamic class tùy vào logic condition:  
+    ```jsx
+    import clsx from 'clsx'
+    import name from './filename.module.css'
+
+    function Component() {
+        return (
+            <div className={clsx(name.className1, {
+                [name.className2]: boolean,
+                ...
+            }, ...)}>
+                ...
+            </div>
+        )
+    }
+    
+    export default Component
+    ```
 
 #### ==== Bài toán ====
 
 **Ví dụ**: Nút hiển thị với màu primary, danger, ... tùy thuộc vào prop truyền sang.  
 
-- Cấu trúc thư mục:  
-    >- components
-    >   - Button
-    >       - index.js
-    >       - Button.module.css
-    >- App.js
+1, Cấu trúc thư mục:  
 
-- Style cho button:  
-    ```css
-    /* Button.css */
-    .btn {
-        padding: 4px 16px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
+>- components
+>   - Button
+>       - index.js
+>       - Button.module.css
+>- App.js
 
-    .primary {
-        background-color: #0d6efd;
-        color: 
-    }
-    ```  
+2, Style cho button:  
 
-- Button component:  
-    ```jsx
-    // components/Button
-    import clsx from 'clsx'
-    import styles from './Button.module.css'
+```css
+/* Button.module.css */
+.btn {
+    padding: 4px 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
 
-    function Button({ primary }) {
+.primary {
+    color: #fff;
+    background-color: #0d6efd;
+}
+```  
 
-        const classes = clsx(styles.btn, { [styles.primary]: primary })
+3, Button component:  
 
-        return (
-            <button className={classes}>
-                Click me!
-            </button >
-        )
-    }
+```jsx
+// components/Button
+import clsx from 'clsx'
+import styles from './Button.module.css'
 
-    export default Button
-    ```
+function Button({ primary }) {
 
-- App component:  
-    ```jsx
-    // App.js
-    import Button from './components/Button'
-    import GlobalStyles from './components/GlobalStyles'
+    const classes = clsx(styles.btn, { [styles.primary]: primary })
 
-    function App() {
-        return (
-            <GlobalStyles>
-                <div style={{ padding: '10px 32px' }}>
-                    <Button />
-                    <Button primary />
-                </div>
-            </GlobalStyles>
-        )
-    }
+    return (
+        <button className={classes}>
+            Click me!
+        </button >
+    )
+}
 
-    export default App
-    ```  
+export default Button
+```
 
-- **Kết hợp global style**:  
-    ```jsx
-    // components/Button
-    import clsx from 'clsx'
-    import styles from './Button.module.css'
+4, App component:  
 
-    function Button({ primary }) {
+```jsx
+// App.js
+import Button from './components/Button'
+import GlobalStyles from './components/GlobalStyles'
 
-        const classes = clsx(styles.btn, 'd-flex', { [styles.primary]: primary })
+function App() {
+    return (
+        <GlobalStyles>
+            <div style={{ padding: '10px 32px' }}>
+                <Button />
+                <Button primary />
+            </div>
+        </GlobalStyles>
+    )
+}
 
-        const classes = clsx(styles.btn, { 
-            [styles.primary]: primary,
-            'd-flex': true 
-        })
+export default App
+```  
 
-        return (
-            <button className={classes}>
-                Click me!
-            </button >
-        )
-    }
+5, **Kết hợp global style**:  
 
-    export default Button
-    ```
-    
+```jsx
+// components/Button
+import clsx from 'clsx'
+import styles from './Button.module.css'
+
+function Button({ primary }) {
+
+    const classes = clsx(
+        styles.btn, 
+        'd-flex', 
+        { [styles.primary]: primary }
+    )
+
+    const classes = clsx(styles.btn, { 
+        [styles.primary]: primary,
+        'd-flex': true 
+    })
+
+    return (
+        <button className={classes}>
+            Click me!
+        </button >
+    )
+}
+
+export default Button
+```
