@@ -301,7 +301,7 @@ Syntax:
 >meta.keywords($args) // => map 
 >```
 
-Return a map, chứa các keyword arguments được truyền cho mixin or function mà nhận arbitrary arguments (args tùy ý) dưới danngj unquoted string (không gồm $) ánh xạ đến value của các arguments.  
+Return a map, chứa các keyword arguments được truyền cho mixin or function mà nhận arbitrary arguments (args tùy ý) dưới dạng unquoted string (không gồm $) ánh xạ đến value của các arguments.  
 
 *Note*: $arg phải là argument list.  
 
