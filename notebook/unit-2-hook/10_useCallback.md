@@ -59,3 +59,25 @@ function App() {
 
 export default App;
 ```
+
+Trong ví dụ trên, Child component Content bị re-render mỗi khi ấn button làm count thay đổi, để tránh điều này sử dụng *useCallback()*:
+
+```jsx
+// App.js
+import { useState, useCallback } from 'react'
+
+function App() {
+    const [count, setCount] = useState(0)
+
+    const handleIncrease = useCallback(() => setCount(count + 1), [])
+
+    return (
+        <div className="App" style={{ padding: 20 }}>
+            <h1>{count}</h1>
+            <Content onIncrease={handleIncrease} />
+        </div>
+    )
+}
+
+export default App;
+```

@@ -244,6 +244,8 @@ Syntax: **property: value;**
     }
     ```
 
+    Note: **:root** đại diện cho root element của document, trong HTML đại diện cho <html>.  
+
 
 ## 3. Parent selector &
 

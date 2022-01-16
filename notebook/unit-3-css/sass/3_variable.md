@@ -75,7 +75,7 @@ $circleArea = math.$pi * 2 * 2;
 
 ## 4. Scope
 
-- **Global**: Biến được khai báo ở top-level của stylesheet, có thể truy xuát từ bất cứ đâu sau khi khai báo.  
+- **Global**: Biến được khai báo ở top-level của stylesheet, có thể truy xuất từ bất cứ đâu sau khi khai báo.  
 - **Local**: Biến được khai báo trong block, chỉ có thể truy xuất trong block được khai báo.  
 
 ```scss
